@@ -50,12 +50,11 @@ end
 
 class Player
 
-  attr_accessor :player_name, :player_state
+  attr_accessor :player_name
 
-  def initialize(player_name, player_state)
+  def initialize(player_name)
     puts "What's your name ?"
     @player_name = gets.chomp
-    @player_state = " "
   end
 
 
@@ -89,8 +88,9 @@ attr_accessor :player_1, :player_2, :set, :round
 
   def victory
 
-    if @case_num["A1"].case_value && @case_num["B2"].case_value && @case_num["C1"].case_value != " "
-      if
+    if @case_num["A1"].case_value && @case_num["B2"].case_value && @case_num["C3"].case_value != " "
+      return false
+    else
         @case_num["A1"].case_value == @case_num["A2"].case_value && @case_num["A2"].case_value == @case_num["A3"].case_value ||#colonne A
         @case_num["B1"].case_value == @case_num["B2"].case_value && @case_num["B2"].case_value == @case_num["B3"].case_value ||#colonne B
         @case_num["C1"].case_value == @case_num["C2"].case_value && @case_num["C2"].case_value == @case_num["C3"].case_value ||#colonne C
@@ -100,23 +100,37 @@ attr_accessor :player_1, :player_2, :set, :round
         @case_num["A1"].case_value == @case_num["B2"].case_value && @case_num["B2"].case_value == @case_num["C3"].case_value ||#diagonale
         @case_num["A3"].case_value == @case_num["B2"].case_value && @case_num["B2"].case_value == @case_num["C1"].case_value   #diagonale
         return true
-      end
-    return false
     end
   end
 
 
   def where_are_we
-  puts "we're now playing round #{@round}/2"
-if victory && @round = 2%==0
-  puts
 
-
-
+    if @round%2!=0
+      puts "we're now playing round #{@round/2}, #{player_1.name_player_1} your turn"
+      puts @set.show_board
+      elsif
+        @round%2==0
+        puts "we're now playing round #{@round/2}, #{player_2.name_player_2} your turn"
+        puts @set.show_board
+    else
+      if victory && @round%2==0
+        puts "#{player_2.name_player_2} you win !!!"
+        puts @set.show_board
+      elsif victory && @round%2!=0
+        puts "#{player_1.name_player_1} you win !!!"
+        puts @set.show_board
+      end
+    end
 end
 
-game = Game.new
+game=Game.new(player1,player2)
 
-game.round
-
+9.times do
+  game.where_are_we
+break if thegame.victory==true
+  game.play
+end
+if thegame.victory=true
+  puts "Match nul !"
 end
