@@ -73,7 +73,7 @@ attr_accessor :player_1, :player_2, :set, :round
   def play
     puts "what case do you want to play (for exemple, first column first line : A1) ?"
     @choice = gets.chomp
-    @choice.capitalize
+    @choice.capitalize!
       if @set.case_num[@choice].case_value != " "
         puts "Look ! Please choose another case, this one has already been checked"
         self.play
@@ -86,20 +86,20 @@ attr_accessor :player_1, :player_2, :set, :round
     @round+=1
   end
 
-  def verifyrow
-      if (@case_num["A1"].case_value == @case_num["B1"].case_value && @case_num["B1"].case_value == @case_num["C1"].case_value && @case_num["A1"].case_value =" ") ||
-          (@case_num["A2"].case_value == @case_num["B2"].case_value && @case_num["B2"].case_value == @case_num["C2"].case_value && @case_num["A2"].case_value =" ") ||
-          (@case_num["A1"].case_value == @case_num["B3"].case_value && @case_num["B3"].case_value == @case_num["C3"].case_value && @case_num["A3"].case_value =" ")
+  def row_check
+      if (@set.case_num["A1"].case_value == @set.case_num["B1"].case_value && @set.case_num["B1"].case_value == @set.case_num["C1"].case_value && @set.case_num["A1"].case_value !=" ") ||
+          (@set.case_num["A2"].case_value == @set.case_num["B2"].case_value && @set.case_num["B2"].case_value == @set.case_num["C2"].case_value && @set.case_num["A2"].case_value !=" ") ||
+          (@set.case_num["A1"].case_value == @set.case_num["B3"].case_value && @set.case_num["B3"].case_value == @set.case_num["C3"].case_value && @set.case_num["A3"].case_value !=" ")
         return true
       else
         return false
       end
   end
 
-  def verifycolumn
-      if (@case_num["A1"].case_value == @case_num["A2"].case_value && @case_num["A2"].case_value == @case_num["A3"].case_value && @case_num["A1"].case_value =" ") ||
-            (@case_num["B1"].case_value == @case_num["B2"].case_value && @case_num["B2"].case_value == @case_num["B3"].case_value && @case_num["B1"].case_value =" ") ||
-            (@case_num["C1"].case_value == @case_num["C2"].case_value && @case_num["C2"].case_value == @case_num["C3"].case_value && @case_num["C1"].case_value =" ")
+  def column_check
+      if (@set.case_num["A1"].case_value == @set.case_num["A2"].case_value && @set.case_num["A2"].case_value == @set.case_num["A3"].case_value && @set.case_num["A1"].case_value !=" ") ||
+            (@set.case_num["B1"].case_value == @set.case_num["B2"].case_value && @set.case_num["B2"].case_value == @set.case_num["B3"].case_value && @set.case_num["B1"].case_value !=" ") ||
+            (@set.case_num["C1"].case_value == @set.case_num["C2"].case_value && @set.case_num["C2"].case_value == @set.case_num["C3"].case_value && @set.case_num["C1"].case_value !=" ")
 
          return true
       else
@@ -107,18 +107,18 @@ attr_accessor :player_1, :player_2, :set, :round
       end
   end
 
-  def verifydiag
-    if @case_num["A1"].case_value == @case_num["B2"].case_value && @case_num["B2"].case_value == @case_num["C3"].case_value && @partie.table["B2"].value!=" "
+  def diag_check
+    if @set.case_num["A1"].case_value == @set.case_num["B2"].case_value && @set.case_num["B2"].case_value == @set.case_num["C3"].case_value && @set.case_num["B2"].case_value!=" "
       return true
-    elsif (@case_num["A3"].case_value == @case_num["B2"].case_value && @case_num["B2"].case_value == @case_num["C1"].case_value && @partie.table["B2"].value!=" "
-          return true
+    elsif @set.case_num["A3"].case_value == @set.case_num["B2"].case_value && @set.case_num["B2"].case_value == @set.case_num["C1"].case_value && @set.case_num["B2"].case_value!=" "
+        return true
     else
       return false
     end
   end
 
   def victory
-    if verifyrow || verifydiag || verifycolumn
+    if row_check || diag_check || column_check
       return true
     else
       return false
@@ -143,33 +143,40 @@ attr_accessor :player_1, :player_2, :set, :round
 
   def where_are_we
 
-    if @round%2!=0
+    if @round%2==0
       puts "we're now playing round #{@round/2}, #{player_1.player_name} your turn"
       puts @set.show_board
-      elsif
-        @round%2==0
+    elsif
+        @round%2!=0
         puts "we're now playing round #{@round/2}, #{player_2.player_name} your turn"
         puts @set.show_board
-    else
-      if victory && @round%2==0
-        puts "#{player_2.name_player_2} you win !!!"
-        puts @set.show_board
-      elsif victory && @round%2!=0
-        puts "#{player_1.name_player_1} you win !!!"
-        puts @set.show_board
-      end
     end
+  end
+
+  def game_ending
+    if victory && @round%2!=0
+      puts "#{player_2.player_name} you win at round #{@round/2} !!!"
+      puts @set.show_board
+    else victory && @round%2==0
+      puts "#{player_1.player_name} you win at round #{@round/2}!!!"
+      puts @set.show_board
+    end
+  end
 end
 
 game=Game.new
 
-9.times do
-  game.where_are_we
-  break if game.victory==true
-  game.play
-end
-    if game.victory=true
-      puts "Match nul !"
+count = 0
+while count < 10
+   if game.victory != true
+     game.where_are_we
+     game.play
+   elsif game.victory == true
+      game.game_ending
+    elsif count == 9
+      puts "Draw ! Game Over !"
     end
+  break if game.victory == true
+  count+=1
   end
 end
