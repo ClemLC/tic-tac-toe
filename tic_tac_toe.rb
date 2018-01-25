@@ -88,8 +88,8 @@ attr_accessor :player_1, :player_2, :set, :round
 
   def verifyrow
       if (@case_num["A1"].case_value == @case_num["B1"].case_value && @case_num["B1"].case_value == @case_num["C1"].case_value && @case_num["A1"].case_value =" ") ||
-            (@case_num["A2"].case_value == @case_num["B2"].case_value && @case_num["B2"].case_value == @case_num["C2"].case_value && @case_num["A2"].case_value =" ") ||
-                  (@case_num["A1"].case_value == @case_num["B3"].case_value && @case_num["B3"].case_value == @case_num["C3"].case_value && @case_num["A3"].case_value =" ") ||
+          (@case_num["A2"].case_value == @case_num["B2"].case_value && @case_num["B2"].case_value == @case_num["C2"].case_value && @case_num["A2"].case_value =" ") ||
+          (@case_num["A1"].case_value == @case_num["B3"].case_value && @case_num["B3"].case_value == @case_num["C3"].case_value && @case_num["A3"].case_value =" ")
         return true
       else
         return false
@@ -97,9 +97,9 @@ attr_accessor :player_1, :player_2, :set, :round
   end
 
   def verifycolumn
-      if if (@case_num["A1"].case_value == @case_num["A2"].case_value && @case_num["A2"].case_value == @case_num["A3"].case_value && @case_num["A1"].case_value =" ") ||
+      if (@case_num["A1"].case_value == @case_num["A2"].case_value && @case_num["A2"].case_value == @case_num["A3"].case_value && @case_num["A1"].case_value =" ") ||
             (@case_num["B1"].case_value == @case_num["B2"].case_value && @case_num["B2"].case_value == @case_num["B3"].case_value && @case_num["B1"].case_value =" ") ||
-                  (@case_num["C1"].case_value == @case_num["C2"].case_value && @case_num["C2"].case_value == @case_num["C3"].case_value && @case_num["C1"].case_value =" ")
+            (@case_num["C1"].case_value == @case_num["C2"].case_value && @case_num["C2"].case_value == @case_num["C3"].case_value && @case_num["C1"].case_value =" ")
 
          return true
       else
